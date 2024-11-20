@@ -2,10 +2,12 @@
 
 #pragma once
 
+#include "IMessageContext.h"
 #include "Components/ActorComponent.h"
-#include "Messaging.h"
 
 #include "RemoteJumpComponent.generated.h"
+
+class FMessageEndpoint;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class MESSAGINGSERVER_API URemoteJumpComponent : public UActorComponent
@@ -23,10 +25,10 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 private:
-	FMessageEndpointPtr JumpEndpoint;
+    TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> JumpEndpoint;
 
 	// Message handler for FJumpNowMessage, called by the Message Bus when a message arrives
-	void JumpNowHandler(const struct FJumpNowMessage& Message, const IMessageContextRef& Context);
+	void JumpNowHandler(const struct FJumpNowMessage& Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 public:
 	// declare a multicast delegate signature, since components have normal functions

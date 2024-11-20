@@ -3,10 +3,14 @@
 #include "MessagingServer.h"
 #include "RemoteJumpComponent.h"
 
+#include "MessageEndpoint.h"
+#include "MessageEndpointBuilder.h"
+
 // Sets default values for this component's properties
 URemoteJumpComponent::URemoteJumpComponent()
 {
-	bWantsBeginPlay = true;
+	//bWantsBeginPlay = true;
+    
 }
 
 // Called when the game starts
@@ -33,7 +37,7 @@ void URemoteJumpComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
-void URemoteJumpComponent::JumpNowHandler(const FJumpNowMessage& Message, const IMessageContextRef& Context)
+void URemoteJumpComponent::JumpNowHandler(const FJumpNowMessage& Message, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	// notify the blueprint that someone wants us to jump
 	OnJumpNow.Broadcast();
